@@ -2,19 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://backend-proyectogo.onrender.com"
-    },
-    {
-      "source": "/add",
-      "destination": "/add.html"
-    },
-    {
-      "source": "/estadisticas",
-      "destination": "/estadisticas.html"
-    },
-    {
-      "source": "/",
-      "destination": "/index.html"
+      "destination": "https://backend-proyectogo.onrender.com/api/$1"
     }
   ],
   "cleanUrls": true,
