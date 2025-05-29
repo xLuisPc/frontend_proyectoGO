@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://TU_BACKEND_RENDER/api/$1"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
