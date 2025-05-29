@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Estudiantes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <style>
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+    </style>
+
+
+</head>
+<body class="bg-light">
+
+<header class="bg-dark py-3 mb-4">
+    <div class="container d-flex justify-content-center gap-3">
+        <a href="/" class="btn btn-outline-light">Inicio</a>
+        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#modalEstudiante">Añadir estudiante</button>
+        <a href="/estadisticas" class="btn btn-outline-light">Estadísticas</a>
+    </div>
+</header>
+
+<main class="container-fluid">
+    <h1 class="text-center mb-4">Estudiantes</h1>
+    <div class="table-responsive">
+        <table id="tabla-estudiantes" class="table table-bordered table-hover text-center align-middle table-sm table-responsive-sm w-100">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Carrera</th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('accion')">Acción</a>
+                </th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('ciencia_ficcion')">Ciencia ficción</a>
+                </th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('comedia')">Comedia</a>
+                </th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('terror')">Terror</a>
+                </th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('documental')">Documental</a>
+                </th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('romance')">Romance</a>
+                </th>
+                <th>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalGenero" onclick="mostrarInfoGenero('musicales')">Musicales</a>
+                </th>
+                <th>POO</th>
+                <th>Cálculo Multivariado</th>
+                <th>CTD</th>
+                <th>Ingeniería de software</th>
+                <th>Bases de datos</th>
+                <th>Control Análogo</th>
+                <th>Circuitos Digitales</th>
+                <th>Promedio</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</main>
+
+<!-- Modal Añadir Estudiante -->
+
+<div class="modal fade" id="modalEstudiante" tabindex="-1" aria-labelledby="modalEstudianteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEstudianteLabel">Añadir nuevo estudiante</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div id="alerta-estudiante"></div>
+                <form id="form-estudiante" class="bg-white p-3">
+                    <div class="mb-3">
+                        <label for="carrera" class="form-label">Carrera:</label>
+                        <select id="carrera" name="carrera" class="form-select" required>
+                            <option value="">Seleccione una opción</option>
+                            <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+                            <option value="Ingeniería Electrónica">Ingeniería Electrónica</option>
+                        </select>
+                    </div>
+
+                    <div id="campos-restantes" style="display: none;">
+                        <fieldset class="mb-3">
+                            <legend class="h6">Preferencia por géneros (0 a 10)</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-3"><label class="form-label">Acción</label><input type="number" id="genero_accion" class="form-control" min="0" max="10" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Ciencia ficción</label><input type="number" id="genero_ciencia_ficcion" class="form-control" min="0" max="10" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Comedia</label><input type="number" id="genero_comedia" class="form-control" min="0" max="10" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Terror</label><input type="number" id="genero_terror" class="form-control" min="0" max="10" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Documental</label><input type="number" id="genero_documental" class="form-control" min="0" max="10" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Romance</label><input type="number" id="genero_romance" class="form-control" min="0" max="10" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Musicales</label><input type="number" id="genero_musicales" class="form-control" min="0" max="10" required></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="mb-4">
+                            <legend class="h6">Notas (0 a 5)</legend>
+                            <div class="row">
+                                <div class="col-md-6 mb-3"><label class="form-label">POO</label><input type="number" id="poo" class="form-control" step="0.1" min="0" max="5" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Cálculo Multivariado</label><input type="number" id="calculo_multivariado" class="form-control" step="0.1" min="0" max="5" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">CTD</label><input type="number" id="ctd" class="form-control" step="0.1" min="0" max="5" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Ingeniería de Software</label><input type="number" id="ingenieria_software" class="form-control" step="0.1" min="0" max="5" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Bases de Datos</label><input type="number" id="bases_datos" class="form-control" step="0.1" min="0" max="5" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Control Análogo</label><input type="number" id="control_analogo" class="form-control" step="0.1" min="0" max="5" required></div>
+                                <div class="col-md-6 mb-3"><label class="form-label">Circuitos Digitales</label><input type="number" id="circuitos_digitales" class="form-control" step="0.1" min="0" max="5" required></div>
+                            </div>
+                        </fieldset>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Descripción de Género -->
+<div class="modal fade" id="modalGenero" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalGeneroTitulo">Género</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalGeneroDescripcion"></p>
+                <strong>Películas recomendadas:</strong>
+                <ul id="modalGeneroPeliculas"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="/static/main.js"></script>
+
+<script>
+    function mostrarInfoGenero(genero) {
+        const dataGeneros = {
+            accion: {
+                titulo: "Acción",
+                descripcion: "Películas con mucha adrenalina, peleas, explosiones y persecuciones.",
+                ejemplos: ["John Wick", "Mad Max: Fury Road", "Die Hard"]
+            },
+            comedia: {
+                titulo: "Comedia",
+                descripcion: "Películas diseñadas para provocar risa mediante situaciones divertidas.",
+                ejemplos: ["Superbad", "The Mask", "Mean Girls"]
+            },
+            ciencia_ficcion: {
+                titulo: "Ciencia Ficción",
+                descripcion: "Exploran mundos futuristas, tecnologías avanzadas o extraterrestres.",
+                ejemplos: ["Inception", "Interstellar", "Blade Runner"]
+            },
+            terror: {
+                titulo: "Terror",
+                descripcion: "Generan miedo o tensión a través de lo desconocido o sobrenatural.",
+                ejemplos: ["The Conjuring", "Hereditary", "It"]
+            },
+            documental: {
+                titulo: "Documental",
+                descripcion: "Exploran hechos reales o temas educativos de forma objetiva.",
+                ejemplos: ["13th", "The Social Dilemma", "Our Planet"]
+            },
+            romance: {
+                titulo: "Romance",
+                descripcion: "Cuentan historias centradas en relaciones amorosas.",
+                ejemplos: ["The Notebook", "Titanic", "La La Land"]
+            },
+            musicales: {
+                titulo: "Musicales",
+                descripcion: "Narrativas combinadas con música y coreografías.",
+                ejemplos: ["The Greatest Showman", "Mamma Mia!", "Les Misérables"]
+            }
+        };
+
+        const info = dataGeneros[genero];
+        document.getElementById('modalGeneroTitulo').textContent = info.titulo;
+        document.getElementById('modalGeneroDescripcion').textContent = info.descripcion;
+
+        const listaPeliculas = document.getElementById('modalGeneroPeliculas');
+        listaPeliculas.innerHTML = '';
+        info.ejemplos.forEach(pelicula => {
+            const li = document.createElement('li');
+            li.textContent = pelicula;
+            listaPeliculas.appendChild(li);
+        });
+    }
+</script>
+<script src="/static/main.js"></script>
+</body>
+</html>
