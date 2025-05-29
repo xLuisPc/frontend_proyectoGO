@@ -3,6 +3,18 @@
     {
       "source": "/api/(.*)",
       "destination": "https://backend-proyectogo.onrender.com/api/$1"
+    },
+    {
+      "source": "/add",
+      "destination": "/add.html"
+    },
+    {
+      "source": "/estadisticas",
+      "destination": "/estadisticas.html"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
     }
   ],
   "cleanUrls": true,
