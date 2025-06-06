@@ -203,10 +203,7 @@ function renderHeatmap(labels, matrix) {
         options: {
             plugins: {
                 datalabels: {
-                    display: true,
-                    color: 'black',
-                    font: { size: 10 },
-                    formatter: ctx => ctx.v.toFixed(2)
+                    display: false,
                 },
                 legend: { display: false },
                 tooltip: {
