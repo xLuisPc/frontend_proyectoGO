@@ -187,10 +187,11 @@ async function cargarCorrelacion() {
 function renderHeatmap(labels, matrix) {
   const canvas = document.getElementById("heatmapCanvas");
 
-  /* ─── Ajuste de tamaño ──────────────
-     • CELDA define el lado (px) de cada cuadro
-     • Ajusta 120 → 140 / 160 si la quieres aún más grande            */
-  const CELDA = 120;
+  // Ajuste dinámico del tamaño de celda según la cantidad de variables
+  let CELDA = 120;
+  if (labels.length > 6) CELDA = 90;
+  if (labels.length > 8) CELDA = 70;
+  if (labels.length > 10) CELDA = 55;
 
   canvas.width  = labels.length * CELDA;
   canvas.height = labels.length * CELDA;
@@ -226,13 +227,30 @@ function renderHeatmap(labels, matrix) {
           labels: labels,
           offset: true,
           position: "top",
-          ticks: { autoSkip: false }
+          ticks: {
+            autoSkip: false,
+            maxRotation: 45,
+            minRotation: 30,
+            font: { size: CELDA > 80 ? 14 : 11 },
+            callback: function(value, index) {
+              // Mostrar el texto completo, pero si es muy largo, recortar
+              let label = this.getLabelForValue(value);
+              return label.length > 18 ? label.slice(0, 16) + '…' : label;
+            }
+          }
         },
         y: {
           type: "category",
           labels: labels.slice().reverse(), // diagonal principal arriba-izq
           offset: true,
-          ticks: { autoSkip: false }
+          ticks: {
+            autoSkip: false,
+            font: { size: CELDA > 80 ? 14 : 11 },
+            callback: function(value, index) {
+              let label = this.getLabelForValue(value);
+              return label.length > 18 ? label.slice(0, 16) + '…' : label;
+            }
+          }
         }
       },
       plugins: {
@@ -241,7 +259,7 @@ function renderHeatmap(labels, matrix) {
         datalabels: {
           display: true,
           color: "black",
-          font: { size: 14 },         // valor numérico más grande
+          font: { size: CELDA > 80 ? 14 : 11 },         // valor numérico más grande
           formatter: c => c.v.toFixed(2)
         }
       }
