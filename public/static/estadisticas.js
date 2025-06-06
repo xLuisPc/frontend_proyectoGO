@@ -29,10 +29,7 @@ function graficar(clusters, ejeX, ejeY) {
         type: 'scatter',
         data: { datasets },
         options: {
-            scales: {
-                x: { title: { display: true, text: ejeX.replace("genero_", "").toUpperCase() }, beginAtZero: true },
-                y: { title: { display: true, text: ejeY.toUpperCase() }, beginAtZero: true, max: 5 }
-            },
+            responsive: true,
             plugins: { legend: { position: 'bottom' } }
         }
     });
