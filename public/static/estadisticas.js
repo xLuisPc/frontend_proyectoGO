@@ -277,6 +277,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("button[onclick='predecirCluster()']").addEventListener("click", predecirCluster);
     document.querySelector("button[onclick='eliminarPrediccion()']").addEventListener("click", eliminarPrediccion);
 
+    // Activar tooltip de Bootstrap para el ícono de información
+    if (window.bootstrap) {
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    }
+
     actualizar();
     cargarCorrelacion();
 });
