@@ -15,7 +15,96 @@
     <a href="/" class="btn btn-outline-primary ms-3">🏠 Volver al inicio</a>
   </div>
 
-  <!-- (Se omiten secciones anteriores que no cambiaron) -->
+  <!-- Selectores -->
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <label for="genero" class="form-label">🎬 Género (eje X):</label>
+      <select id="genero" class="form-select">
+        <option value="genero_accion">Acción</option>
+        <option value="genero_ciencia_ficcion">Ciencia Ficción</option>
+        <option value="genero_comedia" selected>Comedia</option>
+        <option value="genero_terror">Terror</option>
+        <option value="genero_documental">Documental</option>
+        <option value="genero_romance">Romance</option>
+        <option value="genero_musicales">Musicales</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="notaEjeY" class="form-label">📈 Nota (eje Y):</label>
+      <select id="notaEjeY" class="form-select">
+        <option value="poo">POO</option>
+        <option value="calculo_multivariado">Cálculo Multivariado</option>
+        <option value="promedio" selected>Promedio</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="k" class="form-label">🔢 Clusters:</label>
+      <select id="k" class="form-select">
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <button class="btn btn-primary w-100" onclick="document.getElementById('formPrediccion').style.display = 'block'">🔮 Hacer predicción</button>
+    </div>
+  </div>
+
+  <h2 class="text-center">Resumen por Cluster</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center" id="tablaResumen">
+      <thead class="table-light">
+        <tr>
+          <th>Cluster</th>
+          <th>Cantidad</th>
+          <th>Afinidad Género</th>
+          <th>POO</th>
+          <th>Cálculo</th>
+          <th>Promedio</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-7">
+      <canvas id="clusterChart" width="600" height="400" class="mb-3 w-100"></canvas>
+    </div>
+
+    <div class="col-md-5">
+      <div id="formPrediccion" class="p-4 border rounded" style="display: none;">
+        <h4 class="mb-3">🔮 Ingresar datos para predecir promedio</h4>
+        <div class="row g-2">
+          <div class="col-12 mb-2">
+            <label class="form-label">Carrera:</label>
+            <select id="carreraPrediccion" class="form-select" required>
+              <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+              <option value="Ingeniería Electrónica">Ingeniería Electrónica</option>
+            </select>
+          </div>
+          <div class="col-6"><label class="form-label">Acción</label><input type="number" id="genero_accion" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">Ciencia Ficción</label><input type="number" id="genero_ciencia_ficcion" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">Comedia</label><input type="number" id="genero_comedia" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">Terror</label><input type="number" id="genero_terror" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">Documental</label><input type="number" id="genero_documental" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">Romance</label><input type="number" id="genero_romance" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">Musicales</label><input type="number" id="genero_musicales" class="form-control" min="0" max="10" required></div>
+          <div class="col-6"><label class="form-label">POO (opcional)</label><input type="number" id="pooPred" class="form-control" step="0.1" min="0" max="5"></div>
+          <div class="col-6"><label class="form-label">Cálculo (opcional)</label><input type="number" id="calculoPred" class="form-control" step="0.1" min="0" max="5"></div>
+        </div>
+
+        <div class="mt-3 d-flex gap-2">
+          <button class="btn btn-success" onclick="predecirCluster()">Predecir</button>
+          <button class="btn btn-danger" onclick="eliminarPrediccion()">❌ Eliminar predicción</button>
+        </div>
+
+        <div id="resultadoPrediccion" class="mt-3 fw-bold"></div>
+        <div id="alerta-prediccion" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
 
   <h2 class="text-center mt-5">🔬 Matriz de correlación</h2>
   <div class="mb-3">
