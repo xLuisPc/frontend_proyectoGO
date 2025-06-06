@@ -185,63 +185,63 @@ async function cargarCorrelacion() {
 }
 
 function renderHeatmap(labels, matrix) {
-    const canvas = document.getElementById("heatmapCanvas");
+  const canvas = document.getElementById("heatmapCanvas");
 
-    // Tamaño fijo para que siempre se vea bien
-    canvas.width = 60 * labels.length;
-    canvas.height = 40 * labels.length;
+  //  → 40 px por variable
+  canvas.width  = labels.length * 70;
+  canvas.height = labels.length * 50;
 
-    if (heatmapChart) heatmapChart.destroy();
+  if (heatmapChart) heatmapChart.destroy();
 
-    heatmapChart = new Chart(canvas.getContext("2d"), {
-        type: 'matrix',
-        data: {
-            labels: { x: labels, y: labels },
-            datasets: [{
-                label: 'Correlación',
-                data: matrix.flatMap((row, i) =>
-                    row.map((val, j) => ({ x: labels[j], y: labels[i], v: val }))
-                ),
-                backgroundColor(ctx) {
-                    const v = ctx.raw.v;
-                    const red = v > 0 ? Math.floor(255 * v) : 0;
-                    const blue = v < 0 ? Math.floor(255 * -v) : 0;
-                    return `rgb(${red}, ${255 - Math.abs(red - blue)}, ${blue})`;
-                },
-                borderColor: 'rgba(0,0,0,0.1)',
-                borderWidth: 1,
-                width: () => 35,
-                height: () => 35
-            }]
+  heatmapChart = new Chart(canvas.getContext("2d"), {
+    type: "matrix",
+    data: {
+      datasets: [{
+        label: "Correlación",
+        data: matrix.flatMap((row, i) =>
+          row.map((v, j) => ({ x: labels[j], y: labels[i], v }))
+        ),
+        backgroundColor(ctx) {
+          const v = ctx.raw.v;
+          const red  = v > 0 ? Math.floor(255 *  v) : 0;
+          const blue = v < 0 ? Math.floor(255 * -v) : 0;
+          return `rgb(${red}, ${255 - Math.abs(red - blue)}, ${blue})`;
         },
-        options: {
-            plugins: {
-                datalabels: {
-                    display: true,
-                    color: 'black',
-                    font: { size: 10 },
-                    formatter: ctx => ctx.v.toFixed(2)
-                },
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: () => ""
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: { display: true, text: "Variables" },
-                    ticks: { autoSkip: false }
-                },
-                y: {
-                    title: { display: true, text: "Variables" },
-                    ticks: { autoSkip: false }
-                }
-            }
+        borderColor: "rgba(0,0,0,0.1)",
+        borderWidth: 1,
+        width : () => 35,
+        height: () => 35
+      }]
+    },
+    options: {
+      responsive: false,              // ← evitamos que Chart.js cambie el tamaño
+      scales: {
+        x: {
+          type: "category",           // ← clave: eje categórico
+          labels: labels,
+          offset: true,
+          position: "top"
+        },
+        y: {
+          type: "category",           // ← clave: eje categórico
+          labels: labels.slice().reverse(), // opcional: invierte filas para ver la diagonal arriba-izq
+          offset: true
         }
-    });
+      },
+      plugins: {
+        datalabels: {
+          display: true,
+          color: "black",
+          font: { size: 10 },
+          formatter: ctx => ctx.v.toFixed(2)
+        },
+        legend : { display: false },
+        tooltip: { enabled: false }
+      }
+    }
+  });
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
