@@ -176,8 +176,11 @@ function mostrarAlertaPrediccion(mensaje, tipo) {
 
 // HEATMAP
 async function cargarCorrelacion() {
-    const select = document.getElementById("vars");
-    const selected = Array.from(select.selectedOptions).map(opt => opt.value);
+    // Leer los valores seleccionados de los checkboxes
+    const checkboxes = document.querySelectorAll('#vars-checkboxes input[type="checkbox"]');
+    const selected = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
     const query = selected.length ? "?vars=" + selected.join(",") : "";
     const res = await fetch(`${BACKEND_URL}/api/correlacion` + query);
     const data = await res.json();
@@ -267,13 +270,14 @@ function renderHeatmap(labels, matrix) {
   });
 }
 
-
-
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("genero").addEventListener("change", actualizar);
     document.getElementById("notaEjeY").addEventListener("change", actualizar);
     document.getElementById("k").addEventListener("change", actualizar);
-    document.getElementById("vars").addEventListener("change", cargarCorrelacion);
+    // Cambiar evento para checkboxes de variables
+    document.querySelectorAll('#vars-checkboxes input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', cargarCorrelacion);
+    });
     document.querySelector("button[onclick='predecirCluster()']").addEventListener("click", predecirCluster);
     document.querySelector("button[onclick='eliminarPrediccion()']").addEventListener("click", eliminarPrediccion);
 
