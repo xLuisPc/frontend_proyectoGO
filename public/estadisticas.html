@@ -6,7 +6,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.1.0/dist/chartjs-chart-matrix.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 </head>
 <body class="container my-4">
 
@@ -15,7 +15,6 @@
     <a href="/" class="btn btn-outline-primary ms-3">🏠 Volver al inicio</a>
   </div>
 
-  <!-- Selectores -->
   <div class="row mb-3">
     <div class="col-md-3">
       <label for="genero" class="form-label">🎬 Género (eje X):</label>
@@ -51,7 +50,6 @@
     </div>
   </div>
 
-  <!-- Tabla de resumen -->
   <h2 class="text-center">Resumen por Cluster</h2>
   <div class="table-responsive">
     <table class="table table-bordered table-hover text-center" id="tablaResumen">
@@ -69,11 +67,11 @@
     </table>
   </div>
 
-  <!-- Gráfica -->
   <div class="row mb-4">
     <div class="col-md-7">
       <canvas id="clusterChart" width="600" height="400" class="mb-3 w-100"></canvas>
     </div>
+
     <div class="col-md-5">
       <div id="formPrediccion" class="p-4 border rounded" style="display: none;">
         <h4 class="mb-3">🔮 Ingresar datos para predecir promedio</h4>
@@ -107,11 +105,24 @@
     </div>
   </div>
 
-  <!-- 🔬 Heatmap de correlación -->
   <h2 class="text-center mt-5">🔬 Matriz de correlación</h2>
+  <div class="mb-3">
+    <label for="vars" class="form-label">Selecciona las variables:</label>
+    <select multiple class="form-select" id="vars">
+      <option value="genero_accion">Acción</option>
+      <option value="genero_ciencia_ficcion">Ciencia Ficción</option>
+      <option value="genero_comedia">Comedia</option>
+      <option value="genero_terror">Terror</option>
+      <option value="genero_documental">Documental</option>
+      <option value="genero_romance">Romance</option>
+      <option value="genero_musicales">Musicales</option>
+      <option value="poo" selected>POO</option>
+      <option value="calculo_multivariado" selected>Cálculo</option>
+      <option value="promedio" selected>Promedio</option>
+    </select>
+  </div>
   <canvas id="heatmapCanvas" class="w-100" height="400"></canvas>
 
   <script src="/static/estadisticas.js"></script>
-  
 </body>
 </html>
