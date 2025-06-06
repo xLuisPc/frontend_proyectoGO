@@ -1,5 +1,5 @@
 Chart.register(ChartDataLabels);
-
+//comentario rama
 const BACKEND_URL = "https://backend-proyectogo.onrender.com";
 let chart = null;
 let heatmapChart = null;
