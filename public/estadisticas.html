@@ -14,8 +14,8 @@
 </div>
 
 <div class="row mb-3">
-    <div class="col-md-6">
-        <label for="genero" class="form-label">🎬 Género:</label>
+    <div class="col-md-3">
+        <label for="genero" class="form-label">🎬 Género (eje X):</label>
         <select id="genero" class="form-select">
             <option value="genero_accion">Acción</option>
             <option value="genero_ciencia_ficcion">Ciencia Ficción</option>
@@ -26,7 +26,15 @@
             <option value="genero_musicales">Musicales</option>
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <label for="notaEjeY" class="form-label">📈 Nota (eje Y):</label>
+        <select id="notaEjeY" class="form-select">
+            <option value="poo">POO</option>
+            <option value="calculo_multivariado">Cálculo Multivariado</option>
+            <option value="promedio" selected>Promedio</option>
+        </select>
+    </div>
+    <div class="col-md-2">
         <label for="k" class="form-label">🔢 Clusters:</label>
         <select id="k" class="form-select">
             <option value="2">2</option>
@@ -48,6 +56,8 @@
             <th>Cluster</th>
             <th>Cantidad</th>
             <th>Afinidad Género</th>
+            <th>POO</th>
+            <th>Cálculo</th>
             <th>Promedio</th>
         </tr>
         </thead>
@@ -56,12 +66,10 @@
 </div>
 
 <div class="row mb-4">
-    <!-- Gráfica -->
     <div class="col-md-7">
         <canvas id="clusterChart" width="600" height="400" class="mb-3 w-100"></canvas>
     </div>
 
-    <!-- Formulario de predicción -->
     <div class="col-md-5">
         <div id="formPrediccion" class="p-4 border rounded" style="display: none;">
             <h4 class="mb-3">🔮 Ingresar datos para predecir promedio</h4>
@@ -80,7 +88,6 @@
                 <div class="col-6"><label class="form-label">Documental</label><input type="number" min="0" max="10" id="genero_documental" class="form-control" required></div>
                 <div class="col-6"><label class="form-label">Romance</label><input type="number" min="0" max="10" id="genero_romance" class="form-control" required></div>
                 <div class="col-6"><label class="form-label">Musicales</label><input type="number" min="0" max="10" id="genero_musicales" class="form-control" required></div>
-
                 <div class="col-6"><label class="form-label">POO (opcional)</label><input type="number" min="0" max="5" step="0.1" id="pooPred" class="form-control"></div>
                 <div class="col-6"><label class="form-label">Cálculo (opcional)</label><input type="number" min="0" max="5" step="0.1" id="calculoPred" class="form-control"></div>
             </div>
