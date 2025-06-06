@@ -186,7 +186,7 @@ async function cargarCorrelacion() {
 
 function renderHeatmap(labels, matrix) {
     const canvas = document.getElementById("heatmapCanvas");
-    canvas.height = labels.length * 35;
+    canvas.height = labels.length * 20;
     canvas.width = labels.length * 35;
 
     if (heatmapChart) heatmapChart.destroy();
