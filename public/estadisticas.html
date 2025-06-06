@@ -69,8 +69,12 @@
   </div>
 
   <div class="row mb-4">
-    <div class="col-12">
-      <h2 class="text-center mb-3">🔬 Matriz de correlación</h2>
+    <div class="col-md-7">
+      <canvas id="clusterChart" width="600" height="400" class="mb-3 w-100"></canvas>
+    </div>
+
+    <div class="col-md-5">
+      <h3 class="text-center mb-3">🔬 Matriz de correlación</h3>
       <div class="mb-3">
         <label for="vars" class="form-label">Selecciona las variables:</label>
         <select multiple class="form-select" id="vars">
@@ -93,13 +97,9 @@
     </div>
   </div>
 
-  <div class="row mb-4">
-    <div class="col-md-7">
-      <canvas id="clusterChart" width="600" height="400" class="mb-3 w-100"></canvas>
-    </div>
-
-    <div class="col-md-5">
-      <div id="formPrediccion" class="p-4 border rounded mx-auto" style="display: none; max-width: 500px;">
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-8">
+      <div id="formPrediccion" class="p-4 border rounded mx-auto" style="display: none;">
         <h4 class="mb-3">🔮 Ingresar datos para predecir promedio</h4>
         <div class="row g-2">
           <div class="col-12 mb-2">
