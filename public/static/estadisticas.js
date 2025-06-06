@@ -43,43 +43,10 @@ function graficar(clusters, genero) {
     });
 }
 
-function generarResumen(clusters, genero) {
-    const tbody = document.querySelector("#tablaResumen tbody");
-    tbody.innerHTML = "";
-
-    clusters.forEach((cluster, i) => {
-        const n = cluster.Personas.length;
-
-        const promedio = campo => {
-            const valores = cluster.Personas.map(p => p[campo]).filter(v => typeof v === "number");
-            if (valores.length === 0) return "—";
-            return (valores.reduce((sum, v) => sum + v, 0) / valores.length).toFixed(2);
-        };
-
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-            <td><b>${i + 1}</b></td>
-            <td>${n}</td>
-            <td>${promedio(genero)}</td>
-            <td>${promedio("poo")}</td>
-            <td>${promedio("ctd")}</td>
-            <td>${promedio("calculo_multivariado")}</td>
-            <td>${promedio("ingenieria_software")}</td>
-            <td>${promedio("bases_datos")}</td>
-            <td>${promedio("control_analogo")}</td>
-            <td>${promedio("circuitos_digitales")}</td>
-            <td>${promedio("promedio")}</td>
-        `;
-        tbody.appendChild(fila);
-    });
-}
-
 async function actualizar() {
     const genero = document.getElementById("genero").value;
     const clusters = await cargarClusters();
     graficar(clusters, genero);
-    generarResumen(clusters, genero);
-
     if (ultimaPrediccion) {
         await predecirConDatos(ultimaPrediccion);
     }
@@ -102,10 +69,8 @@ async function predecirCluster() {
     campos.forEach(id => {
         const input = document.getElementById(id);
         input.classList.remove("is-invalid");
-
         const valor = input.value.trim();
         const num = parseInt(valor);
-
         if (valor === "" || isNaN(num) || num < 0 || num > 10) {
             input.classList.add("is-invalid");
             valido = false;
@@ -113,6 +78,11 @@ async function predecirCluster() {
             datos[id] = num;
         }
     });
+
+    const poo = parseFloat(document.getElementById("pooPred").value);
+    const calc = parseFloat(document.getElementById("calculoPred").value);
+    if (!isNaN(poo)) datos.poo = poo;
+    if (!isNaN(calc)) datos.calculo_multivariado = calc;
 
     if (!valido) {
         mostrarAlertaPrediccion("❌ Verifica los campos marcados. Valores válidos: 0 a 10.", "danger");
@@ -131,9 +101,7 @@ async function predecirConDatos(datos) {
     });
 
     const resultado = await res.json();
-    const clusterID = resultado.cluster;
     const promedio = resultado.promedio;
-
     const generoSeleccionado = document.getElementById("genero").value;
     const afinidad = datos[generoSeleccionado];
 
@@ -150,33 +118,7 @@ async function predecirConDatos(datos) {
     chart.update();
 
     document.getElementById("resultadoPrediccion").innerText =
-        `🔍 Este perfil pertenece al Cluster ${clusterID + 1} | Estudiantes similares tienen un promedio de ${promedio.toFixed(2)}`;
-
-    // Mostrar tabla de notas estimadas por materia
-    const materias = resultado.materias || {};
-    const contenedorNotas = document.getElementById("notas-estimadas");
-    contenedorNotas.innerHTML = `
-        <table class="table table-sm table-bordered text-center mt-3">
-            <thead class="table-light"><tr>
-                <th>POO</th><th>CTD</th><th>Cálculo</th>
-                <th>Ing. Software</th><th>Bases de Datos</th>
-                <th>Control Análogo</th><th>Circuitos Digitales</th>
-            </tr></thead>
-            <tbody><tr>
-                <td>${formatearNota(materias.poo)}</td>
-                <td>${formatearNota(materias.ctd)}</td>
-                <td>${formatearNota(materias.calculo_multivariado)}</td>
-                <td>${formatearNota(materias.ingenieria_software)}</td>
-                <td>${formatearNota(materias.bases_datos)}</td>
-                <td>${formatearNota(materias.control_analogo)}</td>
-                <td>${formatearNota(materias.circuitos_digitales)}</td>
-            </tr></tbody>
-        </table>
-    `;
-}
-
-function formatearNota(valor) {
-    return typeof valor === "number" ? valor.toFixed(2) : "—";
+        `🔍 Promedio estimado según KNN: ${promedio.toFixed(2)}`;
 }
 
 function eliminarPrediccion() {
@@ -184,7 +126,6 @@ function eliminarPrediccion() {
     chart.data.datasets = chart.data.datasets.filter(d => d.label !== "Predicción");
     chart.update();
     document.getElementById("resultadoPrediccion").innerText = "";
-    document.getElementById("notas-estimadas").innerHTML = "";
 }
 
 function mostrarAlertaPrediccion(mensaje, tipo) {
