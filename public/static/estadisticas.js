@@ -210,7 +210,9 @@ function renderHeatmap(labels, matrix) {
                 },
                 legend: { display: false },
                 tooltip: {
-                    enabled: false,
+                        callbacks: {
+                        label: () => ""
+                        }
                 }
             },
             scales: {
