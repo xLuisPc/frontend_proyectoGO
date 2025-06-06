@@ -11,7 +11,8 @@ async function cargarCorrelacion() {
 }
 
 function renderHeatmap(labels, matrix) {
-    const ctx = document.getElementById("heatmapCanvas").getContext("2d");
+    const canvas = document.getElementById("heatmapCanvas");
+    canvas.height = Math.max(300, labels.length * 45);  // Ajuste dinámico
 
     if (window.heatmapChart) {
         window.heatmapChart.destroy();
@@ -21,7 +22,7 @@ function renderHeatmap(labels, matrix) {
         row.map((val, j) => ({ x: labels[j], y: labels[i], v: val }))
     );
 
-    window.heatmapChart = new Chart(ctx, {
+    window.heatmapChart = new Chart(canvas.getContext("2d"), {
         type: 'matrix',
         data: {
             labels: { x: labels, y: labels },
