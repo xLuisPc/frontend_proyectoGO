@@ -74,7 +74,15 @@
     </div>
 
     <div class="col-md-5 d-flex flex-column align-items-center">
-      <h3 class="text-center mb-3">🔬 Matriz de correlación</h3>
+      <div class="d-flex align-items-center justify-content-center mb-3">
+        <h3 class="text-center mb-0 me-2">🔬 Matriz de correlación</h3>
+        <button type="button" class="btn btn-link p-0 m-0" data-bs-toggle="tooltip" data-bs-placement="right" title="En esta matriz, el color ROJO indica una correlación positiva (más cercano a 1, relación directa fuerte), el color VERDE indica una correlación negativa (más cercano a -1, relación inversa fuerte) y los tonos intermedios representan correlaciones débiles o nulas entre variables seleccionadas.">
+          <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-info-circle' viewBox='0 0 16 16'>
+            <path d='M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z'/>
+            <path d='m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 .877-.252 1.02-.797.066-.258.115-.438.162-.637l.088-.416c.073-.34.211-.466.465-.466.276 0 .375.176.322.464l-.088.416c-.047.199-.096.379-.162.637-.143.545-.475.797-1.02.797-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.288-.469l-.45-.083.082-.38 2.29-.287zm-1.812-2.29c0-.376.288-.682.678-.682.39 0 .678.306.678.682 0 .375-.288.682-.678.682-.39 0-.678-.307-.678-.682z'/>
+          </svg>
+        </button>
+      </div>
       <div class="mb-3 w-100">
         <label for="vars" class="form-label">Selecciona las variables:</label>
         <select multiple class="form-select" id="vars">
@@ -90,8 +98,10 @@
           <option value="promedio" selected>Promedio</option>
         </select>
       </div>
-      <div style="overflow-x: auto; width: 100%; display: flex; justify-content: center;">
-        <canvas id="heatmapCanvas" style="max-width: 100%; height: auto;"></canvas>
+      <div class="w-100" style="overflow-x: auto; display: flex; justify-content: center;">
+        <div style="min-width: 350px;">
+          <canvas id="heatmapCanvas" style="max-width: 100%; height: auto;"></canvas>
+        </div>
       </div>
     </div>
   </div>
