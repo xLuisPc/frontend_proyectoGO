@@ -69,12 +69,37 @@
   </div>
 
   <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="text-center mb-3">🔬 Matriz de correlación</h2>
+      <div class="mb-3">
+        <label for="vars" class="form-label">Selecciona las variables:</label>
+        <select multiple class="form-select" id="vars">
+          <option value="genero_accion">Acción</option>
+          <option value="genero_ciencia_ficcion">Ciencia Ficción</option>
+          <option value="genero_comedia">Comedia</option>
+          <option value="genero_terror">Terror</option>
+          <option value="genero_documental">Documental</option>
+          <option value="genero_romance">Romance</option>
+          <option value="genero_musicales">Musicales</option>
+          <option value="poo" selected>POO</option>
+          <option value="calculo_multivariado" selected>Cálculo</option>
+          <option value="promedio" selected>Promedio</option>
+        </select>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <canvas id="heatmapCanvas" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
     <div class="col-md-7">
       <canvas id="clusterChart" width="600" height="400" class="mb-3 w-100"></canvas>
     </div>
 
     <div class="col-md-5">
-      <div id="formPrediccion" class="p-4 border rounded" style="display: none;">
+      <div id="formPrediccion" class="p-4 border rounded mx-auto" style="display: none; max-width: 500px;">
         <h4 class="mb-3">🔮 Ingresar datos para predecir promedio</h4>
         <div class="row g-2">
           <div class="col-12 mb-2">
@@ -104,27 +129,6 @@
         <div id="alerta-prediccion" class="mt-2"></div>
       </div>
     </div>
-  </div>
-
-  <h2 class="text-center mt-5">🔬 Matriz de correlación</h2>
-  <div class="mb-3">
-    <label for="vars" class="form-label">Selecciona las variables:</label>
-    <select multiple class="form-select" id="vars">
-      <option value="genero_accion">Acción</option>
-      <option value="genero_ciencia_ficcion">Ciencia Ficción</option>
-      <option value="genero_comedia">Comedia</option>
-      <option value="genero_terror">Terror</option>
-      <option value="genero_documental">Documental</option>
-      <option value="genero_romance">Romance</option>
-      <option value="genero_musicales">Musicales</option>
-      <option value="poo" selected>POO</option>
-      <option value="calculo_multivariado" selected>Cálculo</option>
-      <option value="promedio" selected>Promedio</option>
-    </select>
-  </div>
-
-  <div style="overflow-x: auto;">
-    <canvas id="heatmapCanvas" style="max-width: 100%; height: auto;"></canvas>
   </div>
 
   <script src="/static/estadisticas.js"></script>
