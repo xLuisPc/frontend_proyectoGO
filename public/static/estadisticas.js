@@ -186,8 +186,10 @@ async function cargarCorrelacion() {
 
 function renderHeatmap(labels, matrix) {
     const canvas = document.getElementById("heatmapCanvas");
-    canvas.height = labels.length * 20;
-    canvas.width = labels.length * 35;
+
+    // Tamaño fijo para que siempre se vea bien
+    canvas.width = 40 * labels.length;
+    canvas.height = 40 * labels.length;
 
     if (heatmapChart) heatmapChart.destroy();
 
@@ -208,8 +210,8 @@ function renderHeatmap(labels, matrix) {
                 },
                 borderColor: 'rgba(0,0,0,0.1)',
                 borderWidth: 1,
-                width: ({ chart }) => (chart.chartArea?.width || 300) / labels.length - 2,
-                height: ({ chart }) => (chart.chartArea?.height || 300) / labels.length - 2
+                width: () => 35,
+                height: () => 35
             }]
         },
         options: {
@@ -226,10 +228,21 @@ function renderHeatmap(labels, matrix) {
                         label: () => ""
                     }
                 }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: "Variables" },
+                    ticks: { autoSkip: false }
+                },
+                y: {
+                    title: { display: true, text: "Variables" },
+                    ticks: { autoSkip: false }
+                }
             }
         }
     });
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("genero").addEventListener("change", actualizar);
