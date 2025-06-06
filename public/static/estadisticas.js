@@ -187,15 +187,20 @@ async function cargarCorrelacion() {
 function renderHeatmap(labels, matrix) {
   const canvas = document.getElementById("heatmapCanvas");
 
-  //  → 40 px por variable
-  canvas.width  = labels.length * 80;
-  canvas.height = labels.length * 80;
+  /* ─── Ajuste de tamaño ──────────────
+     • CELDA define el lado (px) de cada cuadro
+     • Ajusta 120 → 140 / 160 si la quieres aún más grande            */
+  const CELDA = 120;
+
+  canvas.width  = labels.length * CELDA;
+  canvas.height = labels.length * CELDA;
 
   if (heatmapChart) heatmapChart.destroy();
 
   heatmapChart = new Chart(canvas.getContext("2d"), {
     type: "matrix",
     data: {
+      labels: { x: labels, y: labels },
       datasets: [{
         label: "Correlación",
         data: matrix.flatMap((row, i) =>
@@ -203,40 +208,42 @@ function renderHeatmap(labels, matrix) {
         ),
         backgroundColor(ctx) {
           const v = ctx.raw.v;
-          const red  = v > 0 ? Math.floor(255 *  v) : 0;
-          const blue = v < 0 ? Math.floor(255 * -v) : 0;
-          return `rgb(${red}, ${255 - Math.abs(red - blue)}, ${blue})`;
+          const r = v > 0 ? Math.floor(255 *  v) : 0;  // rojo para positivos
+          const b = v < 0 ? Math.floor(255 * -v) : 0;  // azul para negativos
+          return `rgb(${r}, ${255 - Math.abs(r - b)}, ${b})`;
         },
-        borderColor: "rgba(0,0,0,0.1)",
+        borderColor: "rgba(0,0,0,0.15)",
         borderWidth: 1,
-        width : () => 75,
-        height: () => 75
+        width : () => CELDA - 6,   // deja 6 px de separación
+        height: () => CELDA - 6
       }]
     },
     options: {
-      responsive: false,              // ← evitamos que Chart.js cambie el tamaño
+      responsive: false,           // ← tamaño fijo (no auto-resize)
       scales: {
         x: {
-          type: "category",           // ← clave: eje categórico
+          type: "category",
           labels: labels,
           offset: true,
-          position: "top"
+          position: "top",
+          ticks: { autoSkip: false }
         },
         y: {
-          type: "category",           // ← clave: eje categórico
-          labels: labels.slice().reverse(), // opcional: invierte filas para ver la diagonal arriba-izq
-          offset: true
+          type: "category",
+          labels: labels.slice().reverse(), // diagonal principal arriba-izq
+          offset: true,
+          ticks: { autoSkip: false }
         }
       },
       plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },  // sin tooltips
         datalabels: {
           display: true,
           color: "black",
-          font: { size: 10 },
-          formatter: ctx => ctx.v.toFixed(2)
-        },
-        legend : { display: false },
-        tooltip: { enabled: false }
+          font: { size: 14 },         // valor numérico más grande
+          formatter: c => c.v.toFixed(2)
+        }
       }
     }
   });
