@@ -1,10 +1,12 @@
+const BACKEND_URL = "https://backend-proyectogo.onrender.com";
+
 let chart = null;
 let ultimaPrediccion = null;
 
 async function cargarClusters() {
     const genero = document.getElementById("genero").value;
     const k = document.getElementById("k").value;
-    const res = await fetch(`/api/estadisticas?genero=${genero}&k=${k}`);
+    const res = await fetch(`${BACKEND_URL}/api/estadisticas?genero=${genero}&k=${k}`);
     return await res.json();
 }
 
@@ -123,7 +125,7 @@ async function predecirCluster() {
 }
 
 async function predecirConDatos(datos) {
-    const res = await fetch("/api/prediccion", {
+    const res = await fetch(`${BACKEND_URL}/api/prediccion`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos)
@@ -171,7 +173,7 @@ function mostrarAlertaPrediccion(mensaje, tipo) {
 
 // HEATMAP
 async function cargarCorrelacion() {
-    const res = await fetch("/api/correlacion");
+    const res = await fetch(`${BACKEND_URL}/api/correlacion`);
     const data = await res.json();
     renderHeatmap(data.labels, data.matrix);
 }
