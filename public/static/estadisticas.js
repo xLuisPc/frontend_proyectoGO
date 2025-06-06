@@ -196,8 +196,11 @@ function renderHeatmap(labels, matrix) {
   if (labels.length > 8) CELDA = 70;
   if (labels.length > 10) CELDA = 55;
 
-  canvas.width  = labels.length * CELDA;
-  canvas.height = labels.length * CELDA;
+  // Ajuste extra: considerar longitud máxima de los nombres
+  const maxLabelLength = Math.max(...labels.map(l => l.length));
+  const extraWidth = Math.max(0, (maxLabelLength - 10) * 8); // 8px por cada caracter extra
+  canvas.width  = labels.length * CELDA + extraWidth;
+  canvas.height = labels.length * CELDA + 40; // espacio extra para nombres
 
   if (heatmapChart) heatmapChart.destroy();
 
@@ -232,13 +235,12 @@ function renderHeatmap(labels, matrix) {
           position: "top",
           ticks: {
             autoSkip: false,
-            maxRotation: 45,
-            minRotation: 30,
+            maxRotation: 60,
+            minRotation: 60,
             font: { size: CELDA > 80 ? 14 : 11 },
             callback: function(value, index) {
-              // Mostrar el texto completo, pero si es muy largo, recortar
-              let label = this.getLabelForValue(value);
-              return label.length > 18 ? label.slice(0, 16) + '…' : label;
+              // Mostrar el texto completo, sin recortar
+              return this.getLabelForValue(value);
             }
           }
         },
@@ -250,8 +252,8 @@ function renderHeatmap(labels, matrix) {
             autoSkip: false,
             font: { size: CELDA > 80 ? 14 : 11 },
             callback: function(value, index) {
-              let label = this.getLabelForValue(value);
-              return label.length > 18 ? label.slice(0, 16) + '…' : label;
+              // Mostrar el texto completo, sin recortar
+              return this.getLabelForValue(value);
             }
           }
         }
