@@ -169,6 +169,58 @@ function mostrarAlertaPrediccion(mensaje, tipo) {
     `;
 }
 
+// HEATMAP
+async function cargarCorrelacion() {
+    const res = await fetch("/api/correlacion");
+    const data = await res.json();
+    renderHeatmap(data.labels, data.matrix);
+}
+
+function renderHeatmap(labels, matrix) {
+    const ctx = document.getElementById("heatmapCanvas").getContext("2d");
+
+    const data = {
+        labels: { x: labels, y: labels },
+        datasets: [{
+            label: "Correlación",
+            data: matrix.flatMap((row, i) =>
+                row.map((val, j) => ({ x: labels[j], y: labels[i], v: val }))
+            ),
+            backgroundColor(ctx) {
+                const value = ctx.raw.v;
+                const red = value > 0 ? Math.floor(255 * value) : 0;
+                const blue = value < 0 ? Math.floor(255 * -value) : 0;
+                return `rgb(${red}, ${255 - Math.abs(red - blue)}, ${blue})`;
+            },
+            borderColor: "rgba(0,0,0,0.1)",
+            borderWidth: 1,
+            width: ({ chart }) => (chart.chartArea?.width || 300) / labels.length - 2,
+            height: ({ chart }) => (chart.chartArea?.height || 300) / labels.length - 2
+        }]
+    };
+
+    new Chart(ctx, {
+        type: 'matrix',
+        data,
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: () => "",
+                        label: ctx => `(${ctx.raw.y} vs ${ctx.raw.x}) → ${ctx.raw.v.toFixed(2)}`
+                    }
+                },
+                legend: { display: false }
+            },
+            scales: {
+                x: { title: { display: true, text: "Variable X" }, ticks: { autoSkip: false } },
+                y: { title: { display: true, text: "Variable Y" }, ticks: { autoSkip: false } }
+            }
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("genero").addEventListener("change", actualizar);
     document.getElementById("notaEjeY").addEventListener("change", actualizar);
@@ -176,4 +228,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("button[onclick='predecirCluster()']").addEventListener("click", predecirCluster);
     document.querySelector("button[onclick='eliminarPrediccion()']").addEventListener("click", eliminarPrediccion);
     actualizar();
+    cargarCorrelacion();
 });
