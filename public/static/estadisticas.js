@@ -30,7 +30,21 @@ function graficar(clusters, ejeX, ejeY) {
         data: { datasets },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'bottom' } }
+            scales: {
+                x: {
+                    title: { display: true, text: ejeX.replace("genero_", "").toUpperCase() },
+                    beginAtZero: true
+                },
+                y: {
+                    title: { display: true, text: ejeY.toUpperCase() },
+                    beginAtZero: true,
+                    max: 5
+                }
+            },
+            plugins: {
+                legend: { position: 'bottom' },
+                datalabels: { display: false }
+            }
         }
     });
 }
@@ -200,15 +214,18 @@ function renderHeatmap(labels, matrix) {
         options: {
             plugins: {
                 datalabels: {
-                    display: false,
+                    display: true,
+                    color: 'black',
+                    font: { size: 10 },
+                    formatter: ctx => ctx.v.toFixed(2)
                 },
                 legend: { display: false },
                 tooltip: {
-                        callbacks: {
+                    callbacks: {
                         label: () => ""
-                        }
+                    }
                 }
-            },
+            }
         }
     });
 }
