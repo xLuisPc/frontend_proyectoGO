@@ -210,9 +210,7 @@ function renderHeatmap(labels, matrix) {
                 },
                 legend: { display: false },
                 tooltip: {
-                    callbacks: {
-                        title: () => "",
-                        label: ctx => `(${ctx.raw.y} vs ${ctx.raw.x}) → ${ctx.raw.v.toFixed(2)}`
+                    enabled: false,
                     }
                 }
             },
