@@ -188,7 +188,7 @@ function renderHeatmap(labels, matrix) {
     const canvas = document.getElementById("heatmapCanvas");
 
     // Tamaño fijo para que siempre se vea bien
-    canvas.width = 15 * labels.length;
+    canvas.width = 2 * labels.length;
     canvas.height = 40 * labels.length;
 
     if (heatmapChart) heatmapChart.destroy();
