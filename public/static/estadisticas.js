@@ -212,10 +212,6 @@ function renderHeatmap(labels, matrix) {
                         }
                 }
             },
-            scales: {
-                x: { title: { display: true, text: "Variables" }, ticks: { autoSkip: false } },
-                y: { title: { display: true, text: "Variables" }, ticks: { autoSkip: false } }
-            }
         }
     });
 }
